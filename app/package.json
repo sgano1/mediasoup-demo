@@ -5,7 +5,7 @@
   "description": "mediasoup demo app",
   "author": "Iñaki Baz Castillo <ibc@aliax.net>",
   "license": "All Rights Reserved",
-  "main": "lib/index.jsx",
+  "main": "lib/customIndex.jsx",
   "scripts": {
     "lint": "eslint -c .eslintrc.js --ext .js,.jsx gulpfile.js lib",
     "start": "gulp live"

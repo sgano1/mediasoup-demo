@@ -9,18 +9,15 @@ import { withRoomContext } from '../RoomContext';
 import * as stateActions from '../redux/stateActions';
 import PeerView from './PeerView';
 
-class Me extends React.Component
-{
-	constructor(props)
-	{
+class Me extends React.Component {
+	constructor(props) {
 		super(props);
 
 		this._mounted = false;
 		this._rootNode = null;
 	}
 
-	render()
-	{
+	render() {
 		const {
 			roomClient,
 			connected,
@@ -70,7 +67,7 @@ class Me extends React.Component
 		let tip;
 
 		if (!me.displayNameSet)
-			tip = 'Click on your name to change it';
+			tip = '';//'Click on your name to change it';
 
 		return (
 			<div
@@ -83,8 +80,7 @@ class Me extends React.Component
 					<div className='controls'>
 						<div
 							className={classnames('button', 'mic', micState)}
-							onClick={() =>
-							{
+							onClick={() => {
 								micState === 'on'
 									? roomClient.muteMic()
 									: roomClient.unmuteMic();
@@ -93,17 +89,14 @@ class Me extends React.Component
 
 						<div
 							className={classnames('button', 'webcam', webcamState, {
-								disabled : me.webcamInProgress || me.shareInProgress
+								disabled: me.webcamInProgress || me.shareInProgress
 							})}
-							onClick={() =>
-							{
-								if (webcamState === 'on')
-								{
+							onClick={() => {
+								if (webcamState === 'on') {
 									cookiesManager.setDevices({ webcamEnabled: false });
 									roomClient.disableWebcam();
 								}
-								else
-								{
+								else {
 									cookiesManager.setDevices({ webcamEnabled: true });
 									roomClient.enableWebcam();
 								}
@@ -112,17 +105,16 @@ class Me extends React.Component
 
 						<div
 							className={classnames('button', 'change-webcam', changeWebcamState, {
-								disabled : me.webcamInProgress || me.shareInProgress
+								disabled: me.webcamInProgress || me.shareInProgress
 							})}
 							onClick={() => roomClient.changeWebcam()}
 						/>
 
 						<div
 							className={classnames('button', 'share', shareState, {
-								disabled : me.shareInProgress || me.webcamInProgress
+								disabled: me.shareInProgress || me.webcamInProgress
 							})}
-							onClick={() =>
-							{
+							onClick={() => {
 								if (shareState === 'on')
 									roomClient.disableShare();
 								else
@@ -147,12 +139,10 @@ class Me extends React.Component
 					audioScore={audioProducer ? audioProducer.score : null}
 					videoScore={videoProducer ? videoProducer.score : null}
 					faceDetection={faceDetection}
-					onChangeDisplayName={(displayName) =>
-					{
+					onChangeDisplayName={(displayName) => {
 						roomClient.changeDisplayName(displayName);
 					}}
-					onChangeMaxSendingSpatialLayer={(spatialLayer) =>
-					{
+					onChangeMaxSendingSpatialLayer={(spatialLayer) => {
 						roomClient.setMaxSendingSpatialLayer(spatialLayer);
 					}}
 					onStatsClick={onSetStatsPeerId}
@@ -169,12 +159,10 @@ class Me extends React.Component
 		);
 	}
 
-	componentDidMount()
-	{
+	componentDidMount() {
 		this._mounted = true;
 
-		setTimeout(() =>
-		{
+		setTimeout(() => {
 			if (!this._mounted || this.props.me.displayNameSet)
 				return;
 
@@ -182,13 +170,11 @@ class Me extends React.Component
 		}, 4000);
 	}
 
-	componentWillUnmount()
-	{
+	componentWillUnmount() {
 		this._mounted = false;
 	}
 
-	componentDidUpdate(prevProps)
-	{
+	componentDidUpdate(prevProps) {
 		if (!prevProps.me.displayNameSet && this.props.me.displayNameSet)
 			ReactTooltip.hide(this._rootNode);
 	}
@@ -196,17 +182,16 @@ class Me extends React.Component
 
 Me.propTypes =
 {
-	roomClient       : PropTypes.any.isRequired,
-	connected        : PropTypes.bool.isRequired,
-	me               : appPropTypes.Me.isRequired,
-	audioProducer    : appPropTypes.Producer,
-	videoProducer    : appPropTypes.Producer,
-	faceDetection    : PropTypes.bool.isRequired,
-	onSetStatsPeerId : PropTypes.func.isRequired
+	roomClient: PropTypes.any.isRequired,
+	connected: PropTypes.bool.isRequired,
+	me: appPropTypes.Me.isRequired,
+	audioProducer: appPropTypes.Producer,
+	videoProducer: appPropTypes.Producer,
+	faceDetection: PropTypes.bool.isRequired,
+	onSetStatsPeerId: PropTypes.func.isRequired
 };
 
-const mapStateToProps = (state) =>
-{
+const mapStateToProps = (state) => {
 	const producersArray = Object.values(state.producers);
 	const audioProducer =
 		producersArray.find((producer) => producer.track.kind === 'audio');
@@ -214,18 +199,17 @@ const mapStateToProps = (state) =>
 		producersArray.find((producer) => producer.track.kind === 'video');
 
 	return {
-		connected     : state.room.state === 'connected',
-		me            : state.me,
-		audioProducer : audioProducer,
-		videoProducer : videoProducer,
-		faceDetection : state.room.faceDetection
+		connected: state.room.state === 'connected',
+		me: state.me,
+		audioProducer: audioProducer,
+		videoProducer: videoProducer,
+		faceDetection: state.room.faceDetection
 	};
 };
 
-const mapDispatchToProps = (dispatch) =>
-{
+const mapDispatchToProps = (dispatch) => {
 	return {
-		onSetStatsPeerId : (peerId) => dispatch(stateActions.setRoomStatsPeerId(peerId))
+		onSetStatsPeerId: (peerId) => dispatch(stateActions.setRoomStatsPeerId(peerId))
 	};
 };
 

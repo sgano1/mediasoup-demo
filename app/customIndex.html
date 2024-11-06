@@ -1,0 +1,55 @@
+<!doctype html>
+
+<html>
+
+<head>
+	<title>视频会诊</title>
+	<meta charset='UTF-8'>
+	<meta name='viewport' content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no'>
+	<meta name='description' content='mediasoup demo - Cutting Edge WebRTC Video Conferencing'>
+
+	<link rel='stylesheet' href='./mediasoup-demo-app.css?v=foo2'>
+	<link rel='stylesheet' href='./resources/semantic-ui/semantic.min.css'>
+
+
+	<script src='./resources/js/antiglobal.js'></script>
+	<script>
+		window.localStorage.setItem('debug', '* -engine* -socket* -RIE* *WARN* *ERROR*');
+		if (window.antiglobal) {
+			window.antiglobal('___browserSync___oldSocketIo', 'io', '___browserSync___', '__core-js_shared__');
+			setInterval(window.antiglobal, 180000);
+		}
+	</script>
+	<script src='./mediasoup-demo-app.js?v=foo2'></script>
+</head>
+
+<body>
+	<div id='mediasoup-demo-app-container'></div>
+	<div id='mediasoup-demo-app-media-query-detector'></div>
+	<script>
+		let queryInfo = (function () {
+			let str = location.search.replace("?", "").trim();
+			if (!str) {
+				let msg = "roomId和userId不能为空";
+				alert(msg);
+				throw new Error(msg);
+			}
+			let parts = str.split("&");
+			return parts.reduce((info, part) => {
+				let [key, value] = part.split("=");
+				info[key.trim()] = value.trim();
+				return info;
+			}, {});
+		})();
+		if (!queryInfo.roomId) {
+			throw new Error("roomId不能为空");
+		}
+		if (!queryInfo.userId) {
+			throw new Error("userId不能为空");
+		}
+		let boardConfig = { classroomId: queryInfo.roomId, userId: queryInfo.userId, boardServer: "https://10.0.0.72:6380" };
+		mediasoupApp.init({ ...queryInfo, roomId: queryInfo.roomId, peerId: queryInfo.userId, boardConfig: boardConfig }).run();
+	</script>
+</body>
+
+</html>
