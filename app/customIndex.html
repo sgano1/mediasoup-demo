@@ -37,7 +37,7 @@
 			let parts = str.split("&");
 			return parts.reduce((info, part) => {
 				let [key, value] = part.split("=");
-				info[key.trim()] = value.trim();
+				info[key.trim()] = decodeURIComponent(value.trim());
 				return info;
 			}, {});
 		})();
@@ -47,7 +47,8 @@
 		if (!queryInfo.userId) {
 			throw new Error("userId不能为空");
 		}
-		let boardConfig = { classroomId: queryInfo.roomId, userId: queryInfo.userId, boardServer: "https://10.0.0.72:6380" };
+		let host = location.host;
+		let boardConfig = { classroomId: queryInfo.roomId, userId: queryInfo.userId, boardServer: `https://${host}` };
 		mediasoupApp.init({ ...queryInfo, roomId: queryInfo.roomId, peerId: queryInfo.userId, boardConfig: boardConfig }).run();
 	</script>
 </body>

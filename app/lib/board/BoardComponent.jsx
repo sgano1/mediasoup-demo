@@ -89,8 +89,8 @@ class BoardComponent extends React.Component {
                 let classroomInfo = data.data.classroomInfo;
                 updatePayload.attachmentList = [...(data.data.classroomInfo.attachmentList || [])]
                     || [];
-                updatePayload.currentPageNum = (+classroomInfo.currentAttachmentPageNum) + 1;
                 if (classroomInfo.currentAttachmentId) {
+                    updatePayload.currentPageNum = (+classroomInfo.currentAttachmentPageNum) + 1;
                     updatePayload.currentAttachmentId = classroomInfo.currentAttachmentId;
                     updatePayload.attachmentList.forEach(attachment => {
                         if (attachment.attachmentId == classroomInfo.currentAttachmentId) {
@@ -106,10 +106,10 @@ class BoardComponent extends React.Component {
                         }
                     });
                 } else if (updatePayload.attachmentList.length > 0) {
-                    Promise.resolve().then(data => {
-                        this.boardInstance.changeBoard(updatePayload.attachmentList[0].attachmentId, 0);
-                        return data;
-                    });
+                    //   Promise.resolve().then(data => {
+                    //      this.boardInstance.changeBoard(updatePayload.attachmentList[0].attachmentId, 0);
+                    //     return data;
+                    //  });
                 }
             }
             Promise.resolve(updatePayload).then(data => {
@@ -120,12 +120,12 @@ class BoardComponent extends React.Component {
     }
     render() {
         return <div id="imageContainer">
-            <div style={{ "display": "inline-block", width: "66%", visibility: !!this.state.imageUrl ? "visible" : "hidden", textAlign: "center" }}>
+            <div style={{ "display": "inline-block", width: "69%", visibility: !!this.state.imageUrl ? "visible" : "hidden", textAlign: "center" }}>
                 <img alt="白板图片" src={this.state.imageUrl} style={{ width: "100%", border: "1px solid gray", borderRadius: "5px" }} />
                 <div style={{ "textAlign": "center" }}>
-                    <button class="ui primary basic button" style={{ marginRight: "50px" }} onClick={this.previewPage}>上一页</button>
-                    <button class="ui primary basic button" style={{ marginRight: "50px" }} onClick={this.nextPage}>下一页</button>
-                    <select class="ui  dropdown" value={this.state.currentPageNum} onChange={this.jumpPage}>
+                    <button className="ui primary basic button" style={{ marginRight: "50px" }} onClick={this.previewPage}>上一页</button>
+                    <button className="ui primary basic button" style={{ marginRight: "50px" }} onClick={this.nextPage}>下一页</button>
+                    <select className="ui  dropdown" value={this.state.currentPageNum} onChange={this.jumpPage} style={{ visibility: !!this.state.imageUrl ? "visible" : "hidden" }}>
                         {this.state.imageCountList.map(i => {
                             return <option value={i + ""}>第{i}页</option>
                         })}
