@@ -40,25 +40,27 @@ class Room extends React.Component {
 					>
 						<Me />
 					</div>
+					<div className="ui horizontal divider">
+						视频管理
+					</div>
 					<div className='sidebar'>
 						<div
 							className={classnames('button', 'hide-videos', {
 								on: me.audioOnly,
 								disabled: me.audioOnlyInProgress
 							})}
-							data-tip={'Show/hide participants\' video'}
+							data-tip={'关闭/开启所有视频'}
 							onClick={() => {
 								me.audioOnly
 									? roomClient.disableAudioOnly()
 									: roomClient.enableAudioOnly();
 							}}
 						/>
-
 						<div
 							className={classnames('button', 'mute-audio', {
 								on: me.audioMuted
 							})}
-							data-tip={'Mute/unmute participants\' audio'}
+							data-tip={'关闭/开启所有语音'}
 							onClick={() => {
 								me.audioMuted
 									? roomClient.unmuteAudio()
@@ -70,7 +72,7 @@ class Room extends React.Component {
 							className={classnames('button', 'restart-ice', {
 								disabled: me.restartIceInProgress
 							})}
-							data-tip='Restart ICE'
+							data-tip='重新连接'
 							onClick={() => roomClient.restartIce()}
 						/>
 					</div>

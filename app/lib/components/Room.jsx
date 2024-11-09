@@ -15,17 +15,15 @@ import Stats from './Stats';
 import Notifications from './Notifications';
 import NetworkThrottle from './NetworkThrottle';
 
-class Room extends React.Component
-{
-	render()
-	{
+class Room extends React.Component {
+	render() {
 		const {
 			roomClient,
 			room,
 			me,
 			amActiveSpeaker,
 			onRoomLinkCopy
-		}	= this.props;
+		} = this.props;
 
 		const mediasoupClientVersion = room.mediasoupClientVersion === '__MEDIASOUP_CLIENT_VERSION__'
 			? 'dev'
@@ -54,16 +52,14 @@ class Room extends React.Component
 								href={room.url}
 								target='_blank'
 								rel='noopener noreferrer'
-								onClick={(event) =>
-								{
+								onClick={(event) => {
 									// If this is a 'Open in new window/tab' don't prevent
 									// click default action.
 									if (
 										event.ctrlKey || event.shiftKey || event.metaKey ||
 										// Middle click (IE > 9 and everyone else).
 										(event.button && event.button === 1)
-									)
-									{
+									) {
 										return;
 									}
 
@@ -82,7 +78,7 @@ class Room extends React.Component
 
 					<div
 						className={classnames('me-container', {
-							'active-speaker' : amActiveSpeaker
+							'active-speaker': amActiveSpeaker
 						})}
 					>
 						<Me />
@@ -95,12 +91,11 @@ class Room extends React.Component
 					<div className='sidebar'>
 						<div
 							className={classnames('button', 'hide-videos', {
-								on       : me.audioOnly,
-								disabled : me.audioOnlyInProgress
+								on: me.audioOnly,
+								disabled: me.audioOnlyInProgress
 							})}
 							data-tip={'Show/hide participants\' video'}
-							onClick={() =>
-							{
+							onClick={() => {
 								me.audioOnly
 									? roomClient.disableAudioOnly()
 									: roomClient.enableAudioOnly();
@@ -109,11 +104,10 @@ class Room extends React.Component
 
 						<div
 							className={classnames('button', 'mute-audio', {
-								on : me.audioMuted
+								on: me.audioMuted
 							})}
 							data-tip={'Mute/unmute participants\' audio'}
-							onClick={() =>
-							{
+							onClick={() => {
 								me.audioMuted
 									? roomClient.unmuteAudio()
 									: roomClient.muteAudio();
@@ -122,7 +116,7 @@ class Room extends React.Component
 
 						<div
 							className={classnames('button', 'restart-ice', {
-								disabled : me.restartIceInProgress
+								disabled: me.restartIceInProgress
 							})}
 							data-tip='Restart ICE'
 							onClick={() => roomClient.restartIce()}
@@ -149,9 +143,8 @@ class Room extends React.Component
 		);
 	}
 
-	componentDidMount()
-	{
-		const { roomClient }	= this.props;
+	componentDidMount() {
+		const { roomClient } = this.props;
 
 		roomClient.join();
 	}
@@ -159,30 +152,27 @@ class Room extends React.Component
 
 Room.propTypes =
 {
-	roomClient      : PropTypes.any.isRequired,
-	room            : appPropTypes.Room.isRequired,
-	me              : appPropTypes.Me.isRequired,
-	amActiveSpeaker : PropTypes.bool.isRequired,
-	onRoomLinkCopy  : PropTypes.func.isRequired
+	roomClient: PropTypes.any.isRequired,
+	room: appPropTypes.Room.isRequired,
+	me: appPropTypes.Me.isRequired,
+	amActiveSpeaker: PropTypes.bool.isRequired,
+	onRoomLinkCopy: PropTypes.func.isRequired
 };
 
-const mapStateToProps = (state) =>
-{
+const mapStateToProps = (state) => {
 	return {
-		room            : state.room,
-		me              : state.me,
-		amActiveSpeaker : state.me.id === state.room.activeSpeakerId
+		room: state.room,
+		me: state.me,
+		amActiveSpeaker: state.me.id === state.room.activeSpeakerId
 	};
 };
 
-const mapDispatchToProps = (dispatch) =>
-{
+const mapDispatchToProps = (dispatch) => {
 	return {
-		onRoomLinkCopy : () =>
-		{
+		onRoomLinkCopy: () => {
 			dispatch(requestActions.notify(
 				{
-					text : 'Room link copied to the clipboard'
+					text: 'Room link copied to the clipboard'
 				}));
 		}
 	};
